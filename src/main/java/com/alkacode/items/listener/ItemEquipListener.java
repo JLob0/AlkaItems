@@ -40,20 +40,21 @@ public final class ItemEquipListener implements Listener {
         }
 
         String newId = services.pdc.getTemplateId(event.getNewItem());
-        if (newId == null) {
-            return;
-        }
-        ItemTemplate newTemplate = services.itemsConfig.get(newId);
-        if (newTemplate == null) {
-            return;
+        ItemTemplate newTemplate = newId != null ? services.itemsConfig.get(newId) : null;
+
+        if (newTemplate != null) {
+            if (!meetsRequirements(player, newTemplate)) {
+                returnToInventory(player, event);
+                services.enchantService.updateArmorSetStatus(player);
+                return;
+            }
+            services.effectService.applyAll(player, newTemplate, EffectTrigger.ON_EQUIP);
         }
 
-        if (!meetsRequirements(player, newTemplate)) {
-            returnToInventory(player, event);
-            return;
-        }
-
-        services.effectService.applyAll(player, newTemplate, EffectTrigger.ON_EQUIP);
+        // Set Bonus (Prompt_SetBonus_AlkaItems.md) - recalculado a cada troca de peca, nao so
+        // quando o item em si e um template do AlkaItems (uma peca sem template pode estar
+        // ENTRANDO ou SAINDO de um slot que fazia parte de um set).
+        services.enchantService.updateArmorSetStatus(player);
     }
 
     private boolean meetsRequirements(Player player, ItemTemplate template) {

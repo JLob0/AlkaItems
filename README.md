@@ -41,6 +41,15 @@ importados direto.
   entrega templates na primeira ativação (não-acumulada) do VIP, via
   `hook/AlkaItemsHook` (ServicesManager + reflection, nunca importa
   `com.alkacode.items.*`). Opcional — sem AlkaItems instalado, o VIP funciona normal.
+- **Set Bonus** (`set-requirement:` num encantamento customizado) — bônus contínuo
+  que liga quando o jogador equipa N peças de armadura que compartilham o mesmo
+  encantamento (ou o mesmo `set-group`, se `pieces-must-match: false`) e desliga
+  automaticamente ao tirar qualquer peça. Reaproveita o mesmo sistema de efeito
+  contínuo do `ON_EQUIP` (apply/remove simétrico, ref-count) em vez de duplicar essa
+  lógica — `set-bonus-effects:` usa os mesmos 17 tipos de efeito de item (incluindo
+  os 3 novos: `KNOCKBACK_IMMUNITY`, `POTION_REMOVE`, `ATTRIBUTE_REMOVE`).
+  Placeholders: `%alkaitems_set_bonus_active%`, `%alkaitems_set_bonus_name%`,
+  `%alkaitems_set_pieces_equipped%`, `%alkaitems_set_pieces_equipped_<id>%`.
 
 ## Dependências
 
@@ -52,7 +61,7 @@ importados direto.
   usada no ecossistema) — só necessária pras checagens de `vip-required`/
   `rank-required`.
 
-## Limitações conhecidas (v1.0.0)
+## Limitações conhecidas (v1.0.1)
 
 - **DOUBLE_JUMP/DASH são aproximações** — não existe pulo duplo real na API do
   Bukkit; usa o truque de religar `allowFlight` ao tocar o chão e interceptar
@@ -90,3 +99,14 @@ usado no resto do ecossistema — reflection + softdepend, os dois continuam
 complementares, nunca substituídos. Escopo das GUIs de edição (prático vs. paridade
 total com o CustomAnvil de referência) decidido com o usuário antes da
 implementação.
+
+**Set Bonus** (v1.0.1) veio de um segundo prompt (`Prompt_SetBonus_AlkaItems.md`)
+que reaproveitava o campo `effects` (do sistema de proc one-shot dos encantamentos)
+também pros efeitos contínuos do bônus de set — adaptado pra usar o sistema de
+efeito de item (contínuo, com remoção simétrica automática) em vez disso, já que
+esse era exatamente o problema que esse sistema já resolvia. O prompt também sugeria
+`org.bukkit.event.entity.EntityKnockbackByEntityEvent`/NMS como possível necessidade
+pra imunidade a knockback, hedged como "documentar como limitação se não for
+possível de forma limpa" — verificado via `javap` que o Paper 1.21.8 tem um evento
+de knockback real e cancelável (`io.papermc.paper.event.entity.EntityKnockbackEvent`),
+implementado de verdade, sem NMS/ProtocolLib.

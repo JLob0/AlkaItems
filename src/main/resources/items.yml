@@ -107,3 +107,72 @@ items:
         interval-ticks: 5
     glow: true
     soulbound: true
+
+  # Set Bonus (4 pecas, ver enchants.yml "guardiao_ancestral") - equipar as 4 ao
+  # mesmo tempo liga Regeneracao III + Resistencia II + velocidade + imunidade a
+  # knockback enquanto o set fica completo; tirar qualquer peca desliga tudo.
+  capacete_guardiao:
+    material: NETHERITE_HELMET
+    name: "<dark_aqua>⛑ Capacete do Guardião"
+    lore:
+      - "<gray>Forjado com escamas de dragão ancestral."
+      - ""
+      - "<dark_aqua>Guardião Ancestral"
+      - "<dark_gray>Equipe 4 peças para ativar o bônus."
+    enchantments:
+      PROTECTION: 4
+      UNBREAKING: 3
+    custom-enchantments:
+      guardiao_ancestral: 1
+    glow: true
+    soulbound: true
+
+  peitoral_guardiao:
+    material: NETHERITE_CHESTPLATE
+    name: "<dark_aqua>🛡 Peitoral do Guardião"
+    lore:
+      - "<gray>Forjado com escamas de dragão ancestral."
+      - ""
+      - "<dark_aqua>Guardião Ancestral"
+      - "<dark_gray>Equipe 4 peças para ativar o bônus."
+    enchantments:
+      PROTECTION: 4
+      UNBREAKING: 3
+    custom-enchantments:
+      guardiao_ancestral: 1
+    glow: true
+    soulbound: true
+
+  calcas_guardiao:
+    material: NETHERITE_LEGGINGS
+    name: "<dark_aqua>👖 Calças do Guardião"
+    lore:
+      - "<gray>Forjado com escamas de dragão ancestral."
+      - ""
+      - "<dark_aqua>Guardião Ancestral"
+      - "<dark_gray>Equipe 4 peças para ativar o bônus."
+    enchantments:
+      PROTECTION: 4
+      UNBREAKING: 3
+    custom-enchantments:
+      guardiao_ancestral: 1
+    glow: true
+    soulbound: true
+
+  botas_guardiao:
+    material: NETHERITE_BOOTS
+    name: "<dark_aqua>👢 Botas do Guardião"
+    lore:
+      - "<gray>Forjado com escamas de dragão ancestral."
+      - ""
+      - "<dark_aqua>Guardião Ancestral"
+      - "<dark_gray>Equipe 4 peças para ativar o bônus."
+    enchantments:
+      PROTECTION: 4
+      FEATHER_FALLING: 4
+      DEPTH_STRIDER: 3
+      UNBREAKING: 3
+    custom-enchantments:
+      guardiao_ancestral: 1
+    glow: true
+    soulbound: true

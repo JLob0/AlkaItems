@@ -68,6 +68,25 @@ public final class EnchantsConfig {
             }
         }
 
+        com.alkacode.items.model.SetRequirement setRequirement = null;
+        List<com.alkacode.items.model.ItemEffect> setBonusEffects = List.of();
+        List<com.alkacode.items.model.ItemEffect> setBonusEffectsOnRemove = List.of();
+        ConfigurationSection setSection = section.getConfigurationSection("set-requirement");
+        if (setSection != null) {
+            setRequirement = new com.alkacode.items.model.SetRequirement(
+                    Math.max(1, setSection.getInt("min-pieces", 4)),
+                    setSection.getBoolean("pieces-must-match", true),
+                    setSection.getString("set-group", id));
+            setBonusEffects = com.alkacode.items.util.EffectYamlParser.parseList(plugin.getLogger(),
+                    "Encantamento de set '" + id + "' (set-bonus-effects)",
+                    section.getMapList("set-bonus-effects"),
+                    com.alkacode.items.effect.EffectTrigger.ON_SET_COMPLETE);
+            setBonusEffectsOnRemove = com.alkacode.items.util.EffectYamlParser.parseList(plugin.getLogger(),
+                    "Encantamento de set '" + id + "' (effects-on-set-remove)",
+                    section.getMapList("effects-on-set-remove"),
+                    com.alkacode.items.effect.EffectTrigger.ON_SET_COMPLETE);
+        }
+
         return new CustomEnchantment(
                 id.toLowerCase(Locale.ROOT),
                 section.getString("display-name", id),
@@ -79,7 +98,10 @@ public final class EnchantsConfig {
                 effects,
                 section.getString("description", ""),
                 section.getBoolean("show-in-lore", true),
-                section.getString("lore-format", "<gray><name> <level_roman>")
+                section.getString("lore-format", "<gray><name> <level_roman>"),
+                setRequirement,
+                setBonusEffects,
+                setBonusEffectsOnRemove
         );
     }
 

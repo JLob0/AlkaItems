@@ -62,6 +62,47 @@ enchantments:
         count: 10
         target: SELF
 
+  # Encantamento de SET BONUS - trigger ON_SET_COMPLETE e so um marcador (nunca dispara
+  # via EnchantService#trigger normal). "effects" (proc one-shot, EnchantEffect) fica
+  # vazio aqui de proposito - quem importa e set-bonus-effects/effects-on-set-remove
+  # (ItemEffect, o mesmo sistema continuo de ON_EQUIP/ON_HOLD - ver CustomEnchantment).
+  guardiao_ancestral:
+    display-name: "<dark_aqua>Guardião Ancestral"
+    description: "<gray>Quando todas as 4 peças estiverem equipadas:"
+    max-level: 1
+    applicable-materials: ["*_HELMET", "*_CHESTPLATE", "*_LEGGINGS", "*_BOOTS"]
+    trigger: ON_SET_COMPLETE
+    base-chance: 100.0
+    chance-per-level: 0.0
+    show-in-lore: true
+    lore-format: "<dark_aqua><name>"
+    effects: []
+    set-requirement:
+      min-pieces: 4
+      pieces-must-match: true
+      set-group: "guardiao"
+    set-bonus-effects:
+      - type: POTION
+        potion: REGENERATION
+        amplifier: 2
+        duration-ticks: -1
+      - type: POTION
+        potion: RESISTANCE
+        amplifier: 1
+        duration-ticks: -1
+      - type: SPEED
+        multiplier: 1.2
+      - type: KNOCKBACK_IMMUNITY
+      - type: PARTICLE
+        particle: TOTEM_OF_UNDYING
+        count: 3
+        interval-ticks: 20
+    effects-on-set-remove:
+      - type: SOUND
+        sound: BLOCK_BEACON_DEACTIVATE
+        volume: 1.0
+        pitch: 0.8
+
   defensor_divino:
     display-name: "<aqua>Defensor Divino"
     description: "<gray>Ao receber dano, chance de ganhar <aqua>Resistência I."

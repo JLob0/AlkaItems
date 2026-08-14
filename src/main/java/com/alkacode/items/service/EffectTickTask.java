@@ -40,6 +40,8 @@ public final class EffectTickTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             syncPassive(player);
             fireIntervalEffects(player);
+            services.enchantService.updateArmorSetStatus(player);
+            fireDue(player, services.enchantService.activeSetIntervalEffects(player));
         }
     }
 

@@ -1,10 +1,8 @@
 package com.alkacode.items.config;
 
 import com.alkacode.items.effect.EffectTrigger;
-import com.alkacode.items.effect.EffectType;
 import com.alkacode.items.model.ItemEffect;
 import com.alkacode.items.model.ItemTemplate;
-import com.alkacode.items.model.ParamMap;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -111,30 +109,9 @@ public final class ItemsConfig {
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
     private List<ItemEffect> parseEffects(String templateId, ConfigurationSection section, String key, EffectTrigger trigger) {
-        List<ItemEffect> result = new ArrayList<>();
-        for (Map<?, ?> raw : section.getMapList(key)) {
-            Object typeRaw = raw.get("type");
-            if (!(typeRaw instanceof String typeStr)) {
-                continue;
-            }
-            EffectType type;
-            try {
-                type = EffectType.valueOf(typeStr.toUpperCase(Locale.ROOT));
-            } catch (IllegalArgumentException e) {
-                plugin.getLogger().warning("Item '" + templateId + "' (" + key + ") com efeito de tipo invalido: " + typeStr);
-                continue;
-            }
-            Map<String, Object> params = new LinkedHashMap<>();
-            for (Map.Entry<?, ?> entry : raw.entrySet()) {
-                if (!"type".equals(entry.getKey())) {
-                    params.put(String.valueOf(entry.getKey()), entry.getValue());
-                }
-            }
-            result.add(new ItemEffect(type, trigger, new ParamMap(params)));
-        }
-        return result;
+        return com.alkacode.items.util.EffectYamlParser.parseList(plugin.getLogger(),
+                "Item '" + templateId + "' (" + key + ")", section.getMapList(key), trigger);
     }
 
     public ItemTemplate get(String id) {

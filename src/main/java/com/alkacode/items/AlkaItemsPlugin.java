@@ -23,6 +23,7 @@ import com.alkacode.items.listener.ItemHitListener;
 import com.alkacode.items.listener.ItemHoldListener;
 import com.alkacode.items.listener.ItemShootListener;
 import com.alkacode.items.listener.ItemUseListener;
+import com.alkacode.items.listener.KnockbackImmunityListener;
 import com.alkacode.items.listener.PlayerCleanupListener;
 import com.alkacode.items.service.EffectService;
 import com.alkacode.items.service.EffectTickTask;
@@ -55,8 +56,8 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
         RequirementHook requirementHook = new RequirementHook(this, configManager);
 
         ItemService itemService = new ItemService(this, itemsConfig, itemsAdderHook, pdc);
-        EnchantService enchantService = new EnchantService(this, enchantsConfig, pdc);
         EffectService effectService = new EffectService(this, configManager);
+        EnchantService enchantService = new EnchantService(this, enchantsConfig, pdc, effectService, configManager);
         ChatInputManager chatInputManager = new ChatInputManager();
 
         services = new AlkaItemsServices(this, configManager, itemsConfig, enchantsConfig, pdc, itemService,
@@ -71,7 +72,7 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
         registerCommand();
 
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderAPIHook(this, itemsConfig, pdc).register();
+            new PlaceholderAPIHook(this, itemsConfig, pdc, enchantService).register();
         }
 
         int interval = configManager.effectTickInterval();
@@ -96,6 +97,7 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
         pm.registerEvents(new ItemDeathListener(services), this);
         pm.registerEvents(new ItemDropListener(services), this);
         pm.registerEvents(new PlayerCleanupListener(services), this);
+        pm.registerEvents(new KnockbackImmunityListener(services), this);
         pm.registerEvents(new ChatInputListener(this, services.chatInputManager), this);
     }
 

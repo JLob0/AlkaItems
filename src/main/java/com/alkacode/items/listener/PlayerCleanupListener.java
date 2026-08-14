@@ -18,5 +18,6 @@ public final class PlayerCleanupListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         services.effectService.clearPlayer(event.getPlayer());
+        services.enchantService.clearPlayer(event.getPlayer());
     }
 }

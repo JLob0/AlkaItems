@@ -8,5 +8,9 @@ public enum EffectTrigger {
     ON_UNHOLD,
     ON_USE,
     ON_PASSIVE,
-    ON_TICK
+    ON_TICK,
+    /** Usado internamente pelo "Set Bonus" (service/EnchantService#updateArmorSetStatus) como
+     * chave estavel de apply/remove - nao corresponde a uma secao items.yml (ver
+     * model/CustomEnchantment#setBonusEffects). */
+    ON_SET_COMPLETE
 }

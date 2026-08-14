@@ -29,3 +29,6 @@ items:
   info.template: "<gray>Template: <white><id></white>"
   info.enchants: "<gray>Encantamentos customizados: <white><list></white>"
   info.soulbound: "<gray>Soulbound: <white><value></white>"
+  set.activated: "<green>✦ Bônus de conjunto <gold><set></gold> <green>ativado!"
+  set.deactivated: "<red>✦ Bônus de conjunto <gold><set></gold> <red>desativado."
+  set.pieces: "<gray>Você tem <yellow><current>/<required></yellow> peças do conjunto <gold><set></gold><gray>."

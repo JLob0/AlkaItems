@@ -2,6 +2,7 @@ package com.alkacode.items.hook;
 
 import com.alkacode.items.config.ItemsConfig;
 import com.alkacode.items.model.ItemTemplate;
+import com.alkacode.items.service.EnchantService;
 import com.alkacode.items.util.ItemPdc;
 import com.alkacode.items.util.TextUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -22,11 +23,13 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion {
     private final JavaPlugin plugin;
     private final ItemsConfig itemsConfig;
     private final ItemPdc pdc;
+    private final EnchantService enchantService;
 
-    public PlaceholderAPIHook(JavaPlugin plugin, ItemsConfig itemsConfig, ItemPdc pdc) {
+    public PlaceholderAPIHook(JavaPlugin plugin, ItemsConfig itemsConfig, ItemPdc pdc, EnchantService enchantService) {
         this.plugin = plugin;
         this.itemsConfig = itemsConfig;
         this.pdc = pdc;
+        this.enchantService = enchantService;
     }
 
     @Override
@@ -77,6 +80,19 @@ public final class PlaceholderAPIHook extends PlaceholderExpansion {
         if (key.startsWith("enchant_level_")) {
             String id = key.substring("enchant_level_".length());
             return String.valueOf(pdc.getEnchantLevel(inv.getItemInMainHand(), id));
+        }
+        if (key.equals("set_bonus_active")) {
+            return String.valueOf(!enchantService.activeSets(player).isEmpty());
+        }
+        if (key.equals("set_bonus_name")) {
+            return enchantService.activeSetDisplayName(player);
+        }
+        if (key.equals("set_pieces_equipped")) {
+            return enchantService.bestSetProgress(player);
+        }
+        if (key.startsWith("set_pieces_equipped_")) {
+            String id = key.substring("set_pieces_equipped_".length());
+            return String.valueOf(enchantService.countSetPieces(player, id));
         }
         return null;
     }

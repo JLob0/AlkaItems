@@ -43,6 +43,7 @@ public final class EffectService {
     private final Map<UUID, Integer> noFallDamageRefCount = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> doubleJumpRefCount = new ConcurrentHashMap<>();
     private final Map<UUID, Integer> dashRefCount = new ConcurrentHashMap<>();
+    private final Map<UUID, Integer> knockbackImmunityRefCount = new ConcurrentHashMap<>();
     private final Map<UUID, Set<String>> activePassiveTemplates = new ConcurrentHashMap<>();
 
     public EffectService(JavaPlugin plugin, ConfigManager config) {
@@ -51,16 +52,26 @@ public final class EffectService {
     }
 
     public void applyAll(Player player, ItemTemplate template, EffectTrigger trigger) {
-        List<ItemEffect> effects = effectsFor(template, trigger);
-        for (int i = 0; i < effects.size(); i++) {
-            apply(player, template.id(), trigger, i, effects.get(i));
-        }
+        applyEffects(player, template.id(), trigger, effectsFor(template, trigger));
     }
 
     public void removeAll(Player player, ItemTemplate template, EffectTrigger trigger) {
-        List<ItemEffect> effects = effectsFor(template, trigger);
+        removeEffects(player, template.id(), trigger, effectsFor(template, trigger));
+    }
+
+    /** Versao generica de {@link #applyAll} que nao depende de um {@link ItemTemplate} - usada pelo
+     * "Set Bonus" (ver EnchantService#updateArmorSetStatus), cuja fonte e um CustomEnchantment, nao
+     * um template de item. {@code sourceId} precisa ser unico e ESTAVEL entre o apply e o remove
+     * (mesma chave usada em ATTRIBUTE/SPEED/JUMP pra achar o modifier certo depois). */
+    public void applyEffects(Player player, String sourceId, EffectTrigger trigger, List<ItemEffect> effects) {
         for (int i = 0; i < effects.size(); i++) {
-            remove(player, template.id(), trigger, i, effects.get(i));
+            apply(player, sourceId, trigger, i, effects.get(i));
+        }
+    }
+
+    public void removeEffects(Player player, String sourceId, EffectTrigger trigger, List<ItemEffect> effects) {
+        for (int i = 0; i < effects.size(); i++) {
+            remove(player, sourceId, trigger, i, effects.get(i));
         }
     }
 
@@ -92,6 +103,18 @@ public final class EffectService {
             case NO_FALL_DAMAGE -> noFallDamageRefCount.merge(uuid, 1, Integer::sum);
             case DOUBLE_JUMP -> doubleJumpRefCount.merge(uuid, 1, Integer::sum);
             case DASH -> dashRefCount.merge(uuid, 1, Integer::sum);
+            case KNOCKBACK_IMMUNITY -> knockbackImmunityRefCount.merge(uuid, 1, Integer::sum);
+            case POTION_REMOVE -> {
+                PotionEffectType type = potionType(p);
+                if (type != null) player.removePotionEffect(type);
+            }
+            case ATTRIBUTE_REMOVE -> {
+                Attribute attribute = attributeOf(p.getString("attribute", ""));
+                if (attribute != null && player.getAttribute(attribute) != null) {
+                    var instance = player.getAttribute(attribute);
+                    List.copyOf(instance.getModifiers()).forEach(instance::removeModifier);
+                }
+            }
             case COMMAND -> {
                 if (trigger == EffectTrigger.ON_EQUIP || trigger == EffectTrigger.ON_HOLD) {
                     runCommand(player, p);
@@ -128,7 +151,8 @@ public final class EffectService {
             case NO_FALL_DAMAGE -> decRef(noFallDamageRefCount, uuid);
             case DOUBLE_JUMP -> decRef(doubleJumpRefCount, uuid);
             case DASH -> decRef(dashRefCount, uuid);
-            case COMMAND, PARTICLE, SOUND -> { }
+            case KNOCKBACK_IMMUNITY -> decRef(knockbackImmunityRefCount, uuid);
+            case COMMAND, PARTICLE, SOUND, POTION_REMOVE, ATTRIBUTE_REMOVE -> { }
         }
     }
 
@@ -227,6 +251,7 @@ public final class EffectService {
     public boolean hasNoFallDamage(Player player) { return noFallDamageRefCount.getOrDefault(player.getUniqueId(), 0) > 0; }
     public boolean hasDoubleJump(Player player) { return doubleJumpRefCount.getOrDefault(player.getUniqueId(), 0) > 0; }
     public boolean hasDash(Player player) { return dashRefCount.getOrDefault(player.getUniqueId(), 0) > 0; }
+    public boolean hasKnockbackImmunity(Player player) { return knockbackImmunityRefCount.getOrDefault(player.getUniqueId(), 0) > 0; }
 
     // ---- ON_PASSIVE: chamado periodicamente com o snapshot atual de templates passivos no inventario ----
     public void syncPassive(Player player, Set<String> currentTemplateIds, java.util.function.Function<String, ItemTemplate> resolver) {
@@ -257,6 +282,7 @@ public final class EffectService {
         noFallDamageRefCount.remove(uuid);
         doubleJumpRefCount.remove(uuid);
         dashRefCount.remove(uuid);
+        knockbackImmunityRefCount.remove(uuid);
         activePassiveTemplates.remove(uuid);
     }
 }
