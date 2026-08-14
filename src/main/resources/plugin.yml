@@ -1,0 +1,28 @@
+name: AlkaItems
+version: '${version}'
+main: com.alkacode.items.AlkaItemsPlugin
+api-version: '1.21'
+author: AlkaStudio
+description: Itens customizados, efeitos ao equipar/segurar e encantamentos customizados da rede Alka.
+depend: [AlkaCore]
+softdepend: [ItemsAdder, AdvancedEnchantments, PlaceholderAPI, AlkaVips, AlkaRankUp]
+
+commands:
+  alkaitems:
+    description: Gerenciamento de itens e encantamentos customizados do AlkaItems
+    usage: /<command> <create|edit|delete|give|save|load|list|enchant|removeenchant|info|reload>
+    aliases: [ai, alkai]
+
+permissions:
+  alkaitems.admin:
+    default: op
+    description: Comandos administrativos do AlkaItems
+  alkaitems.give:
+    default: op
+    description: Dar itens customizados a outros jogadores
+  alkaitems.info:
+    default: true
+    description: Ver informacoes do item na mao (/alkaitems info)
+  alkaitems.reload:
+    default: op
+    description: Recarregar configuracao

@@ -1,0 +1,109 @@
+# Templates de item do AlkaItems. "material" aceita um Material vanilla ou um id do
+# ItemsAdder ("itemsadder:algum_id") se o ItemsAdder estiver presente. Criar/editar um
+# item novo = editar aqui + /alkaitems reload (a GUI cobre ajustes rapidos de flags e
+# encantamentos, nao a criacao do zero).
+
+items:
+  espada_veneno:
+    material: NETHERITE_SWORD
+    name: "<dark_green>Espada do Cobra"
+    lore:
+      - "<gray>Uma lâmina envenenada."
+      - ""
+      - "<dark_purple>+ Veneno Fatal III"
+      - "<dark_purple>+ Chance de aplicar Veneno II ao acertar."
+    enchantments:
+      SHARPNESS: 5
+      FIRE_ASPECT: 2
+    custom-enchantments:
+      veneno_fatal: 3
+    effects-on-hold:
+      - type: ATTRIBUTE
+        attribute: ATTACK_DAMAGE
+        modifier: 1.5
+        operation: ADD_NUMBER
+    effects-on-use:
+      - type: PARTICLE
+        particle: WITCH
+        count: 50
+      - type: SOUND
+        sound: ENTITY_SPLASH_POTION_BREAK
+        volume: 1.0
+    glow: true
+    soulbound: false
+    unbreakable: false
+
+  armadura_regeneracao:
+    material: DIAMOND_CHESTPLATE
+    name: "<aqua>Peitoral do Guardião"
+    lore:
+      - "<gray>Uma armadura forjada nas profundezas."
+      - ""
+      - "<green>+ Receba Regeneração II ao equipar."
+      - "<green>+ +2 de Armadura."
+      - "<green>+ Partículas de água ao redor."
+    enchantments:
+      PROTECTION: 4
+      UNBREAKING: 3
+    effects-on-equip:
+      - type: POTION
+        potion: REGENERATION
+        amplifier: 1
+        duration-ticks: -1
+      - type: ATTRIBUTE
+        attribute: ARMOR
+        modifier: 2.0
+        operation: ADD_NUMBER
+      - type: PARTICLE
+        particle: BUBBLE_POP
+        count: 5
+        interval-ticks: 20
+    glow: true
+    unbreakable: false
+    soulbound: true
+
+  botas_velocidade:
+    material: LEATHER_BOOTS
+    name: "<yellow>Botas do Vento"
+    color: "#FFD700"
+    lore:
+      - "<gray>Leves como o ar."
+      - ""
+      - "<yellow>+ Velocidade +30% ao equipar."
+      - "<yellow>+ Sem dano de queda."
+      - "<yellow>+ Pulo duplo."
+    enchantments:
+      FEATHER_FALLING: 4
+      DEPTH_STRIDER: 3
+    effects-on-equip:
+      - type: SPEED
+        multiplier: 1.3
+      - type: NO_FALL_DAMAGE
+      - type: DOUBLE_JUMP
+    glow: true
+
+  # Exemplo de item usando material do ItemsAdder - so funciona se o ItemsAdder
+  # estiver instalado e o id abaixo existir no pack dele. Sem ItemsAdder, o
+  # ItemService cai pra um fallback vanilla (ver ItemService#build).
+  espada_lendaria_ia:
+    material: "itemsadder:espada_dragon"
+    name: "<dark_red>⚔ Espada do Dragão"
+    lore:
+      - "<gray>Forjada com a escama de um dragão ancestral."
+      - ""
+      - "<dark_red>+ Fúria Sanguinária V"
+      - "<dark_red>+ +3 de Dano de Ataque"
+      - "<dark_red>+ Partículas de fogo ao segurar"
+    custom-enchantments:
+      furia_sanguinaria: 5
+    effects-on-hold:
+      - type: ATTRIBUTE
+        attribute: ATTACK_DAMAGE
+        modifier: 3.0
+        operation: ADD_NUMBER
+      - type: PARTICLE
+        particle: FLAME
+        count: 3
+        interval-ticks: 5
+    glow: true
+    soulbound: true

@@ -1,0 +1,83 @@
+# Encantamentos customizados do AlkaItems. Coexistem com AdvancedEnchantments (se
+# presente) e com encantamentos vanilla - um item pode ter os tres tipos ao mesmo
+# tempo. Formato de cada efeito: "type" + parametros diretos (ver README pros tipos
+# disponiveis por trigger).
+
+enchantments:
+  veneno_fatal:
+    display-name: "<dark_green>Veneno Fatal"
+    description: "<gray>Chance de aplicar <dark_green>Veneno II <gray>ao acertar o oponente."
+    max-level: 5
+    applicable-materials: [DIAMOND_SWORD, NETHERITE_SWORD, IRON_SWORD]
+    trigger: ON_HIT
+    base-chance: 15.0
+    chance-per-level: 5.0
+    show-in-lore: true
+    lore-format: "<dark_purple><name> <level_roman>"
+    effects:
+      - type: POTION_TARGET
+        potion: POISON
+        duration-ticks: 100
+        amplifier: 1
+      - type: PARTICLE
+        particle: WITCH
+        count: 20
+        target: VICTIM
+
+  furia_sanguinaria:
+    display-name: "<dark_red>Fúria Sanguinária"
+    description: "<gray>Ao matar, recebe <dark_red>Força I <gray>por 10 segundos."
+    max-level: 3
+    applicable-materials: []
+    trigger: ON_KILL
+    base-chance: 100.0
+    chance-per-level: 0.0
+    show-in-lore: true
+    lore-format: "<dark_red><name> <level_roman>"
+    effects:
+      - type: POTION_SELF
+        potion: STRENGTH
+        duration-ticks: 200
+        amplifier: 0
+      - type: SOUND
+        sound: ENTITY_WITHER_SPAWN
+        volume: 0.5
+        pitch: 1.2
+
+  minerador_eficiente:
+    display-name: "<gold>Minerador Eficiente"
+    description: "<gray>Chance de dropar o dobro de itens ao quebrar blocos."
+    max-level: 5
+    applicable-materials: ["*_PICKAXE"]
+    trigger: ON_BLOCK_BREAK
+    base-chance: 10.0
+    chance-per-level: 8.0
+    show-in-lore: true
+    lore-format: "<gold><name> <level_roman>"
+    effects:
+      - type: DROP_MULTIPLIER
+        multiplier: 2.0
+      - type: PARTICLE
+        particle: HAPPY_VILLAGER
+        count: 10
+        target: SELF
+
+  defensor_divino:
+    display-name: "<aqua>Defensor Divino"
+    description: "<gray>Ao receber dano, chance de ganhar <aqua>Resistência I."
+    max-level: 3
+    applicable-materials: ["*_CHESTPLATE", "*_LEGGINGS"]
+    trigger: ON_DAMAGE_TAKEN
+    base-chance: 12.0
+    chance-per-level: 8.0
+    show-in-lore: true
+    lore-format: "<aqua><name> <level_roman>"
+    effects:
+      - type: POTION_SELF
+        potion: RESISTANCE
+        duration-ticks: 60
+        amplifier: 0
+      - type: PARTICLE
+        particle: TOTEM_OF_UNDYING
+        count: 30
+        target: SELF

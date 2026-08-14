@@ -1,0 +1,26 @@
+# Configuracao geral do AlkaItems.
+
+# Intervalo (em ticks) da task que processa efeitos ON_TICK e ON_PASSIVE continuos
+# (particulas/som recorrentes com "interval-ticks" proprio sao checados a cada tick
+# desse loop, nao a cada tick do servidor - 1 = mais preciso e mais caro).
+effect-tick-interval: 1
+
+# DOUBLE_JUMP (Ideia simplificada - nao e um double-jump "real" como em mods client-side):
+# concede UM pulo extra enquanto no ar, detectado por uma janela de tempo apos deixar
+# o chao. Ver listener/ItemEffectMovementListener.
+double-jump:
+  velocity: 0.5
+
+# DASH (idem, simplificado): duplo-toque em sneak dispara um impulso pra frente.
+dash:
+  velocity: 1.2
+  cooldown-ticks: 40
+  double-tap-window-ticks: 8
+
+# vip-required/rank-required (ver ItemTemplate) so sao aplicados se o respectivo
+# plugin (AlkaVips/AlkaRankUp) + PlaceholderAPI estiverem presentes - sem PAPI, essas
+# restricoes ficam desativadas (item funciona pra todo mundo, sem checagem).
+requirements:
+  # id do placeholder do AlkaRankUp usado pra comparar contra "rank-required"
+  # (indice numerico, nao string - ver com.alkacode.rankup.hook.RankUpExpansion).
+  rank-index-placeholder: "%alkarankup_rank_index%"

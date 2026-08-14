@@ -1,0 +1,7 @@
+template-list:
+  title: "<dark_gray>AlkaItems <gray>- Templates"
+  size: 54
+
+item-editor:
+  title: "<dark_gray>AlkaItems <gray>- Editor"
+  size: 54
