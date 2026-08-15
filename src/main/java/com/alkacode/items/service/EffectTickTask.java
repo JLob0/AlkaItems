@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +66,11 @@ public final class EffectTickTask extends BukkitRunnable {
         if (equipment == null) {
             return;
         }
-        List<ItemStack> sources = new ArrayList<>(List.of(equipment.getArmorContents()));
+        ItemStack[] armor = equipment.getArmorContents();
+        List<ItemStack> sources = new ArrayList<>();
+        if (armor != null) {
+            Collections.addAll(sources, armor);
+        }
         sources.add(equipment.getItemInMainHand());
 
         for (ItemStack item : sources) {
