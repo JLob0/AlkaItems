@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.0.1"
+version = "1.0.2"
 
 java {
     toolchain {
@@ -27,7 +27,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     // Banco/GUI base vem do AlkaCore (DatabaseProvider/BaseGui) - AlkaItems nao abre
     // conexao JDBC propria nem registra o proprio GuiListener.
-    compileOnly("com.alkacode:AlkaCore:1.0.3")
+    compileOnly("com.alkacode:AlkaCore:1.0.4")
     compileOnly("me.clip:placeholderapi:2.11.6")
     // ItemsAdder e AdvancedEnchantments sao plugins de terceiro sem artefato Maven
     // publico confiavel - integrados 100% via reflection (ver hook/), sem compileOnly,

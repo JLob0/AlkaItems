@@ -29,6 +29,7 @@ import com.alkacode.items.service.EffectService;
 import com.alkacode.items.service.EffectTickTask;
 import com.alkacode.items.service.EnchantService;
 import com.alkacode.items.service.ItemService;
+import com.alkacode.items.shiftlore.AlkaItemsShiftLoreProvider;
 import com.alkacode.items.util.ItemPdc;
 
 /**
@@ -70,6 +71,11 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
 
         registerListeners();
         registerCommand();
+
+        // Item de teste do Shift-Lore System (AlkaCore v1.0.4+) - qualquer item ja
+        // criado pelo /alkaitems ganha lore detalhado ao segurar Shift, de graca.
+        getAlkaAPI().getShiftLore().registerProvider(this,
+                new AlkaItemsShiftLoreProvider(itemsConfig, enchantsConfig, pdc));
 
         if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderAPIHook(this, itemsConfig, pdc, enchantService).register();
