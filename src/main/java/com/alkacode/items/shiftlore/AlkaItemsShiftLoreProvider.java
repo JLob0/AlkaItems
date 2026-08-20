@@ -89,7 +89,7 @@ public final class AlkaItemsShiftLoreProvider implements ShiftLoreProvider {
         }
 
         detailed.add(Component.empty());
-        detailed.add(TextUtil.parse("<dark_gray>Solte <white>Shift <dark_gray>para ver menos"));
+        detailed.add(TextUtil.parse("<dark_gray>Mova o item para fechar esta lore"));
 
         return new ShiftLoreEntry(List.of(), detailed);
     }
