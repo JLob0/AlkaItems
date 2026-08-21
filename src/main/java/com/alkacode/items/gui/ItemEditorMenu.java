@@ -1,12 +1,12 @@
 package com.alkacode.items.gui;
 
-import com.alkacode.core.gui.BaseGui;
 import com.alkacode.items.AlkaItemsServices;
+import com.alkacode.items.gui.layout.GuiLayoutLoader;
 import com.alkacode.items.model.ItemTemplate;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -21,92 +21,85 @@ import java.util.Map;
  * atalho de chat aqui, o resto do template e "rapido de mexer, lento de criar do zero"
  * por design.
  */
-public final class ItemEditorMenu extends BaseGui {
+public final class ItemEditorMenu extends AlkaItemsGui {
 
-    private final AlkaItemsServices services;
     private final String templateId;
 
     public ItemEditorMenu(Player viewer, AlkaItemsServices services, String templateId) {
-        super(services.plugin, viewer, services.configManager.menus().getString("item-editor.title", "&8AlkaItems - Editor"),
-                services.configManager.menus().getInt("item-editor.size", 54) / 9, "alkaitems_item_editor");
-        this.services = services;
+        super(services, viewer, "item-editor");
         this.templateId = templateId;
     }
 
     @Override
     public void render() {
-        fill(createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        GuiLayoutLoader.GuiLayout layout = applyBorder();
         ItemTemplate template = services.itemsConfig.get(templateId);
         if (template == null) {
-            setItem(22, createItem(Material.BARRIER, "<red>Template nao encontrado"));
+            setAt(layout, 'P', icon("template-nao-encontrado"));
             return;
         }
 
-        setItem(4, services.itemService.build(template, 1));
+        setItem(layout.firstSlot('P'), services.itemService.build(template, 1));
 
-        setItem(10, createItem(Material.ITEM_FRAME, "<yellow>Material", "<gray>Atual: <white>" + template.material(),
-                "", "<green>Clique para digitar"), e -> promptText("material", template.material(), (t, v) -> t.material(v)));
+        setAt(layout, 'M', icon("material", Map.of("valor", template.material())),
+                e -> promptText("material", template.material(), (t, v) -> t.material(v)));
 
-        setItem(11, createItem(Material.NAME_TAG, "<yellow>Nome", "<gray>Atual: <white>" + template.name(),
-                "", "<green>Clique para digitar"), e -> promptText("name", template.name(), (t, v) -> t.name(v)));
+        setAt(layout, 'N', icon("nome", Map.of("valor", template.name())),
+                e -> promptText("name", template.name(), (t, v) -> t.name(v)));
 
-        setItem(12, createItem(Material.GLOWSTONE_DUST, "<yellow>Glow", "<gray>Atual: <white>" + template.glow(),
-                "", "<green>Clique para alternar"), e -> save(template.toBuilder().glow(!template.glow())));
+        setAt(layout, 'G', icon("glow", Map.of("valor", String.valueOf(template.glow()))),
+                e -> save(template.toBuilder().glow(!template.glow())));
 
-        setItem(13, createItem(Material.TOTEM_OF_UNDYING, "<yellow>Soulbound", "<gray>Atual: <white>" + template.soulbound(),
-                "", "<green>Clique para alternar"), e -> save(template.toBuilder().soulbound(!template.soulbound())));
+        setAt(layout, 'S', icon("soulbound", Map.of("valor", String.valueOf(template.soulbound()))),
+                e -> save(template.toBuilder().soulbound(!template.soulbound())));
 
-        setItem(14, createItem(Material.ANVIL, "<yellow>Unbreakable", "<gray>Atual: <white>" + template.unbreakable(),
-                "", "<green>Clique para alternar"), e -> save(template.toBuilder().unbreakable(!template.unbreakable())));
+        setAt(layout, 'U', icon("unbreakable", Map.of("valor", String.valueOf(template.unbreakable()))),
+                e -> save(template.toBuilder().unbreakable(!template.unbreakable())));
 
-        setItem(15, createItem(Material.PAPER, "<yellow>Custom Model Data", "<gray>Atual: <white>" + template.customModelData(),
-                "", "<green>Clique para digitar"), e -> promptInt("custom-model-data", template.customModelData(),
-                (t, v) -> t.customModelData(v)));
+        setAt(layout, 'C', icon("custom-model-data", Map.of("valor", String.valueOf(template.customModelData()))),
+                e -> promptInt("custom-model-data", template.customModelData(), (t, v) -> t.customModelData(v)));
 
-        setItem(16, createItem(Material.EXPERIENCE_BOTTLE, "<yellow>Durabilidade Maxima", "<gray>Atual: <white>" + template.maxDurability(),
-                "<gray>(0 = padrao vanilla)", "", "<green>Clique para digitar"), e -> promptInt("max-durability",
-                template.maxDurability(), (t, v) -> t.maxDurability(v)));
+        setAt(layout, 'D', icon("max-durability", Map.of("valor", String.valueOf(template.maxDurability()))),
+                e -> promptInt("max-durability", template.maxDurability(), (t, v) -> t.maxDurability(v)));
 
-        setItem(19, createItem(Material.BOOK, "<yellow>Esconder Encantamentos", "<gray>Atual: <white>" + template.hideEnchants(),
-                "", "<green>Clique para alternar"), e -> save(template.toBuilder().hideEnchants(!template.hideEnchants())));
+        setAt(layout, 'H', icon("hide-enchants", Map.of("valor", String.valueOf(template.hideEnchants()))),
+                e -> save(template.toBuilder().hideEnchants(!template.hideEnchants())));
 
-        setItem(20, createItem(Material.IRON_CHESTPLATE, "<yellow>Esconder Atributos", "<gray>Atual: <white>" + template.hideAttributes(),
-                "", "<green>Clique para alternar"), e -> save(template.toBuilder().hideAttributes(!template.hideAttributes())));
+        setAt(layout, 'A', icon("hide-attributes", Map.of("valor", String.valueOf(template.hideAttributes()))),
+                e -> save(template.toBuilder().hideAttributes(!template.hideAttributes())));
 
-        setItem(21, createItem(Material.NETHER_STAR, "<yellow>VIP Requerido",
-                "<gray>Atual: <white>" + (template.vipRequired().isBlank() ? "nenhum" : template.vipRequired()),
-                "<gray>(id do tier - ver vips.yml no AlkaVips)", "", "<green>Clique para digitar (vazio = remover)"),
+        setAt(layout, 'J', icon("vip-required", Map.of("valor",
+                        template.vipRequired().isBlank() ? "nenhum" : template.vipRequired())),
                 e -> promptText("vip-required", template.vipRequired(), (t, v) -> t.vipRequired(v)));
 
-        setItem(22, createItem(Material.GOLD_INGOT, "<yellow>Rank Minimo Requerido",
-                "<gray>Atual: <white>" + (template.rankRequired() <= 0 ? "nenhum" : template.rankRequired()),
-                "<gray>(indice minimo - %alkarankup_rank_index%)", "", "<green>Clique para digitar (0 = remover)"),
+        setAt(layout, 'R', icon("rank-required", Map.of("valor",
+                        template.rankRequired() <= 0 ? "nenhum" : String.valueOf(template.rankRequired()))),
                 e -> promptInt("rank-required", template.rankRequired(), (t, v) -> t.rankRequired(v)));
 
-        setItem(23, createItem(Material.LEATHER_CHESTPLATE, "<yellow>Cor (couro)",
-                "<gray>Atual: <white>" + (template.color().isBlank() ? "nenhuma" : template.color()),
-                "", "<green>Clique para digitar (#RRGGBB, vazio = remover)"),
+        setAt(layout, 'K', icon("color", Map.of("valor", template.color().isBlank() ? "nenhuma" : template.color())),
                 e -> promptText("color", template.color(), (t, v) -> t.color(v)));
 
-        List<String> enchantLore = new java.util.ArrayList<>(enchantLore(template.customEnchantments()));
-        enchantLore.add("");
-        enchantLore.add("<green>Clique: 'id:nivel' adiciona, 'remove:id' remove");
-        setItem(24, createItem(Material.ENCHANTED_BOOK, "<yellow>Encantamentos Customizados", enchantLore.toArray(new String[0])),
-                e -> promptCustomEnchant(template));
+        setAt(layout, 'E', customEnchantIcon(template), e -> promptCustomEnchant(template));
 
-        setItem(45, createItem(Material.ARROW, "<red>Voltar"), e -> new TemplateListMenu(player, services, 0).open());
-        setItem(49, createItem(Material.TNT, "<red>Deletar Template",
-                "<gray>Remove o template inteiro do items.yml", "", "<red><bold>Clique para deletar (sem confirmacao)"),
-                e -> {
-                    services.itemsConfig.delete(templateId);
-                    new TemplateListMenu(player, services, 0).open();
-                });
-        setItem(53, createItem(Material.CHEST, "<green>Dar 1x na mao"), e -> services.itemService.giveItem(player, templateId, 1));
+        setAt(layout, 'V', icon("voltar"), e -> new TemplateListMenu(player, services, 0).open());
+        setAt(layout, 'X', icon("deletar"), e -> {
+            services.itemsConfig.delete(templateId);
+            new TemplateListMenu(player, services, 0).open();
+        });
+        setAt(layout, 'Z', icon("dar"), e -> services.itemService.giveItem(player, templateId, 1));
+    }
+
+    private org.bukkit.inventory.ItemStack customEnchantIcon(ItemTemplate template) {
+        List<String> lore = new ArrayList<>(enchantLore(template.customEnchantments()));
+        lore.add("");
+        lore.add(services.menuConfig.text("item-editor.custom-enchant.lore-instrucao", null));
+        return createItem(services.menuConfig.material("item-editor.custom-enchant", org.bukkit.Material.ENCHANTED_BOOK),
+                services.menuConfig.name("item-editor.custom-enchant", null), lore.toArray(new String[0]));
     }
 
     private List<String> enchantLore(Map<String, Integer> enchants) {
         if (enchants.isEmpty()) {
-            return List.of("<gray>Nenhum");
+            return List.of(services.menuConfig.text("item-editor.custom-enchant.lore-nenhum", null));
         }
         return enchants.entrySet().stream()
                 .map(en -> "<gray>- <white>" + en.getKey() + " <gray>nivel <white>" + en.getValue())

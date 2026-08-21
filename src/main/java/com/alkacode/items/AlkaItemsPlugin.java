@@ -7,6 +7,8 @@ import com.alkacode.items.command.ItemsCommand;
 import com.alkacode.items.config.ConfigManager;
 import com.alkacode.items.config.EnchantsConfig;
 import com.alkacode.items.config.ItemsConfig;
+import com.alkacode.items.config.MenuConfig;
+import com.alkacode.items.gui.layout.GuiLayoutLoader;
 import com.alkacode.items.gui.ChatInputManager;
 import com.alkacode.items.hook.AdvancedEnchantmentsHook;
 import com.alkacode.items.hook.ItemsAdderHook;
@@ -48,6 +50,8 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
     protected void onPluginEnable() {
         ConfigManager configManager = new ConfigManager(this);
         configManager.load();
+        MenuConfig menuConfig = new MenuConfig(this);
+        GuiLayoutLoader guiLayoutLoader = new GuiLayoutLoader(this);
         ItemsConfig itemsConfig = new ItemsConfig(this);
         EnchantsConfig enchantsConfig = new EnchantsConfig(this);
         ItemPdc pdc = new ItemPdc(this);
@@ -61,8 +65,9 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
         EnchantService enchantService = new EnchantService(this, enchantsConfig, pdc, effectService, configManager);
         ChatInputManager chatInputManager = new ChatInputManager();
 
-        services = new AlkaItemsServices(this, configManager, itemsConfig, enchantsConfig, pdc, itemService,
-                enchantService, effectService, itemsAdderHook, advancedEnchantmentsHook, requirementHook, chatInputManager);
+        services = new AlkaItemsServices(this, configManager, menuConfig, guiLayoutLoader, itemsConfig, enchantsConfig,
+                pdc, itemService, enchantService, effectService, itemsAdderHook, advancedEnchantmentsHook,
+                requirementHook, chatInputManager);
         api = new AlkaItemsAPIImpl(services);
         // Registrado via ServicesManager (mesmo padrao de AlkaVipsBoostAPI/AlkaFlairAPI
         // no resto do ecossistema) - getAPI() abaixo continua existindo pra quem prefere
@@ -130,6 +135,7 @@ public final class AlkaItemsPlugin extends AlkaPlugin {
 
     public void reloadAll() {
         services.configManager.reload();
+        services.menuConfig.reload();
         services.itemsConfig.load();
         services.enchantsConfig.load();
     }

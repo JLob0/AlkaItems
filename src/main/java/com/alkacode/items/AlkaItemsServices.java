@@ -3,6 +3,8 @@ package com.alkacode.items;
 import com.alkacode.items.config.ConfigManager;
 import com.alkacode.items.config.EnchantsConfig;
 import com.alkacode.items.config.ItemsConfig;
+import com.alkacode.items.config.MenuConfig;
+import com.alkacode.items.gui.layout.GuiLayoutLoader;
 import com.alkacode.items.hook.AdvancedEnchantmentsHook;
 import com.alkacode.items.hook.ItemsAdderHook;
 import com.alkacode.items.hook.RequirementHook;
@@ -21,6 +23,8 @@ public final class AlkaItemsServices {
 
     public final AlkaItemsPlugin plugin;
     public final ConfigManager configManager;
+    public final MenuConfig menuConfig;
+    public final GuiLayoutLoader guiLayoutLoader;
     public final ItemsConfig itemsConfig;
     public final EnchantsConfig enchantsConfig;
     public final ItemPdc pdc;
@@ -32,13 +36,16 @@ public final class AlkaItemsServices {
     public final RequirementHook requirementHook;
     public final ChatInputManager chatInputManager;
 
-    public AlkaItemsServices(AlkaItemsPlugin plugin, ConfigManager configManager, ItemsConfig itemsConfig,
+    public AlkaItemsServices(AlkaItemsPlugin plugin, ConfigManager configManager, MenuConfig menuConfig,
+                              GuiLayoutLoader guiLayoutLoader, ItemsConfig itemsConfig,
                               EnchantsConfig enchantsConfig, ItemPdc pdc, ItemService itemService,
                               EnchantService enchantService, EffectService effectService,
                               ItemsAdderHook itemsAdderHook, AdvancedEnchantmentsHook advancedEnchantmentsHook,
                               RequirementHook requirementHook, ChatInputManager chatInputManager) {
         this.plugin = plugin;
         this.configManager = configManager;
+        this.menuConfig = menuConfig;
+        this.guiLayoutLoader = guiLayoutLoader;
         this.itemsConfig = itemsConfig;
         this.enchantsConfig = enchantsConfig;
         this.pdc = pdc;

@@ -1,0 +1,32 @@
+# AlkaItems - Layouts de GUI (posicoes configuraveis)
+# Regras:
+#   # = fundo preenchido (BLACK_STAINED_GLASS_PANE via common.border)
+#   _ = vazio (nunca preenchido)
+#   Letras = slots controlados pelo Java (conteudo/acao fixa) - texto/icone de cada
+#            letra fica em menus.yml (chave descritiva, nao a letra em si)
+#   0 = slot de grade dinamica (templates)
+
+template-list:
+  rows: 6
+  layout:
+    - "000000000"
+    - "000000000"
+    - "000000000"
+    - "000000000"
+    - "000000000"
+    - "A___F___N"
+  # 0=template (dinamico), A=anterior, F=fechar, N=proximo
+
+item-editor:
+  rows: 6
+  layout:
+    - "####P####"
+    - "#MNGSUCD#"
+    - "#HAJRKE##"
+    - "#########"
+    - "#########"
+    - "V___X___Z"
+  # P=preview (sem clique), M=material, N=nome, G=glow, S=soulbound, U=unbreakable,
+  # C=custom-model-data, D=durabilidade-maxima, H=hide-enchants, A=hide-attributes,
+  # J=vip-required, R=rank-required, K=color, E=custom-enchant,
+  # V=voltar, X=deletar, Z=dar-1x

@@ -6,13 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-/** config.yml/messages.yml/menus.yml - mesmo padrao ja usado em com.alkacode.vips.config.ConfigManager. */
+/** config.yml/messages.yml - menus.yml agora e responsabilidade de com.alkacode.items.config.MenuConfig (R8). */
 public final class ConfigManager {
 
     private final JavaPlugin plugin;
     private FileConfiguration config;
     private FileConfiguration messages;
-    private FileConfiguration menus;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -21,7 +20,6 @@ public final class ConfigManager {
     public void load() {
         config = loadResource("config.yml");
         messages = loadResource("messages.yml");
-        menus = loadResource("menus.yml");
     }
 
     public void reload() {
@@ -37,7 +35,6 @@ public final class ConfigManager {
     }
 
     public FileConfiguration config() { return config; }
-    public FileConfiguration menus() { return menus; }
 
     public String prefix() { return messages.getString("prefix", ""); }
 

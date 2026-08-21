@@ -1,7 +1,142 @@
+# ============================================================
+# AlkaItems - menus.yml
+# Titulos, icones (material), nomes e lores de todas as GUIs.
+# Placeholders entre {} sao trocados na hora. MiniMessage.
+# Layout/posicao dos slots fica em gui-layouts.yml - aqui e so
+# icone+texto, casado pelas mesmas chaves que o Java usa no setAt().
+# ============================================================
+
+common:
+  border:
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+
+# ------------------------- Lista de Templates -------------------------
 template-list:
   title: "<dark_gray>AlkaItems <gray>- Templates"
-  size: 54
+  vazio:
+    material: BARRIER
+    name: "<yellow>Nenhum template cadastrado"
+    lore:
+      - "<gray>Crie um com /alkaitems create <id>"
+  anterior:
+    material: ARROW
+    name: "<white>Anterior"
+  fechar:
+    material: BARRIER
+    name: "<red>Fechar"
+  proximo:
+    material: ARROW
+    name: "<white>Proximo"
 
+# ------------------------- Editor de Template -------------------------
 item-editor:
   title: "<dark_gray>AlkaItems <gray>- Editor"
-  size: 54
+  template-nao-encontrado:
+    material: BARRIER
+    name: "<red>Template não encontrado"
+  material:
+    material: ITEM_FRAME
+    name: "<yellow>Material"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para digitar"
+  nome:
+    material: NAME_TAG
+    name: "<yellow>Nome"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para digitar"
+  glow:
+    material: GLOWSTONE_DUST
+    name: "<yellow>Glow"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para alternar"
+  soulbound:
+    material: TOTEM_OF_UNDYING
+    name: "<yellow>Soulbound"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para alternar"
+  unbreakable:
+    material: ANVIL
+    name: "<yellow>Unbreakable"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para alternar"
+  custom-model-data:
+    material: PAPER
+    name: "<yellow>Custom Model Data"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para digitar"
+  max-durability:
+    material: EXPERIENCE_BOTTLE
+    name: "<yellow>Durabilidade Máxima"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - "<gray>(0 = padrão vanilla)"
+      - ""
+      - "<green>Clique para digitar"
+  hide-enchants:
+    material: BOOK
+    name: "<yellow>Esconder Encantamentos"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para alternar"
+  hide-attributes:
+    material: IRON_CHESTPLATE
+    name: "<yellow>Esconder Atributos"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para alternar"
+  vip-required:
+    material: NETHER_STAR
+    name: "<yellow>VIP Requerido"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - "<gray>(id do tier - ver vips.yml no AlkaVips)"
+      - ""
+      - "<green>Clique para digitar (vazio = remover)"
+  rank-required:
+    material: GOLD_INGOT
+    name: "<yellow>Rank Mínimo Requerido"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - "<gray>(índice mínimo - %alkarankup_rank_index%)"
+      - ""
+      - "<green>Clique para digitar (0 = remover)"
+  color:
+    material: LEATHER_CHESTPLATE
+    name: "<yellow>Cor (couro)"
+    lore:
+      - "<gray>Atual: <white>{valor}"
+      - ""
+      - "<green>Clique para digitar (#RRGGBB, vazio = remover)"
+  custom-enchant:
+    material: ENCHANTED_BOOK
+    name: "<yellow>Encantamentos Customizados"
+    lore-nenhum: "<gray>Nenhum"
+    lore-instrucao: "<green>Clique: 'id:nivel' adiciona, 'remove:id' remove"
+  voltar:
+    material: ARROW
+    name: "<red>Voltar"
+  deletar:
+    material: TNT
+    name: "<red>Deletar Template"
+    lore:
+      - "<gray>Remove o template inteiro do items.yml"
+      - ""
+      - "<red><bold>Clique para deletar (sem confirmação)"
+  dar:
+    material: CHEST
+    name: "<green>Dar 1x na mão"
